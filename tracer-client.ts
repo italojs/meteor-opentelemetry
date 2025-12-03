@@ -6,8 +6,6 @@ import { BatchSpanProcessor, WebTracerProvider } from '@opentelemetry/sdk-trace-
 import { resourceFromAttributes } from '@opentelemetry/resources';
 
 import { DDPSpanExporter } from "./ddp-otlp-client";
-import './instrument/ddp-client'
-
 export const resource = resourceFromAttributes({
   'session.host': document.location.host,
   'session.id': crypto.randomUUID(),

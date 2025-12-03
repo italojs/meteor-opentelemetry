@@ -72,7 +72,11 @@ import { Meteor } from "meteor/meteor";
     if (payload.msg == 'result') {
       const currentSpan = trace.getActiveSpan();
       if (currentSpan) {
-        recordSpanError(currentSpan, payload.error);
+        if (payload.error) {
+          recordSpanError(currentSpan, payload.error);
+        } else {
+          currentSpan.setStatus({ code: SpanStatusCode.OK });
+        }
         currentSpan.end();
       }
     } else if (payload.msg == 'ready') {
@@ -80,6 +84,7 @@ import { Meteor } from "meteor/meteor";
         const subSpan = this.subSpans?.get(subId);
         if (subSpan) {
           // console.log('sssub', subId, !!subSpan);
+          subSpan.setStatus({ code: SpanStatusCode.OK });
           subSpan.end();
           this.subSpans?.delete(subId);
         }
